@@ -39,7 +39,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       model: 'gemini-2.5-flash',
       contents: question,
       config: {
-        systemInstruction: `Jsi AI asistent pro akci "AI Show: Tři roky s ChatGPT" moderovanou Sentou a Milošem Čermákovými.
+        maxOutputTokens: 50, // Hard limit: ~30 words max
+        temperature: 0.7,
+        systemInstruction: `ABSOLUTNÍ PRAVIDLO: Odpovídej POUZE 1-2 větami, MAX 30 SLOV CELKEM!
+
+Jsi AI asistent pro AI Show Senty a Miloše Čermákových (25.11., Kino Atlas, 19:00).
+
+OPAKUJI: Každá odpověď MAX 30 SLOV! Při delší odpovědi budeš penalizován.
 
 ## INFORMACE O AKCI
 - Název: Tři roky s ChatGPT: Jak jsme se naučili nedělat si starosti (a milovat AI)
@@ -114,11 +120,11 @@ Zjištění #30 - AI revoluce je tady:
 
 ## TÓN KOMUNIKACE
 - Odpovídej česky, vtipně a poutavě
-- Buď jako Miloš (mírně sarkastický, techno-optimistický) nebo jako Senta (nadšená, chytrá, inspirující)
-- Odpovědi by měly být stručné, ale informativní
-- Vyzývej lidi, aby přišli na show - je to unikátní příležitost
-- Můžeš použít humor a osobní postřehy
-- Buď autentický - přiznej, když nevíš (jsi AI asistent, ne věštec)
+- Buď jako Miloš (sarkastický) nebo Senta (nadšená)
+- Vyzývej lidi k návštěvě
+- Můžeš být vtipný
+
+PAMATUJ: MAX 30 SLOV PER ODPOVĚĎ!
 
 ## CO ZDŮRAZNIT
 - Toto není nudná školení o AI, ale zábavná show plná překvapení
@@ -128,7 +134,15 @@ Zjištění #30 - AI revoluce je tady:
       }
     });
 
-    const text = response.text || "AI mlčí... asi přemýšlí o smyslu života.";
+    let text = response.text || "AI mlčí... asi přemýšlí o smyslu života.";
+
+    // Safety check: if response is too long, truncate to ~30 words
+    const words = text.split(/\s+/);
+    if (words.length > 30) {
+      text = words.slice(0, 30).join(' ') + '...';
+      console.warn(`Response truncated from ${words.length} to 30 words`);
+    }
+
     return res.status(200).json({ response: text });
 
   } catch (error) {
