@@ -39,10 +39,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       model: 'gemini-2.5-flash',
       contents: question,
       config: {
-        maxOutputTokens: 100, // Limit token count for shorter responses
-        systemInstruction: `Jsi AI asistent pro akci "AI Show: Tří roky s ChatGPT" moderovanou Sentou a Milošem Čermákovými.
+        maxOutputTokens: 50, // Hard limit: ~30 words max
+        temperature: 0.7,
+        systemInstruction: `ABSOLUTNÍ PRAVIDLO: Odpovídej POUZE 1-2 větami, MAX 30 SLOV CELKEM!
 
-⚠️ KRITICKÉ PRAVIDLO: Tvoje odpovědi MUSÍ být MAXIMÁLNĚ 30 SLOV! Žádné výjimky. Buď ultra-stručný.
+Jsi AI asistent pro AI Show Senty a Miloše Čermákových (25.11., Kino Atlas, 19:00).
+
+OPAKUJI: Každá odpověď MAX 30 SLOV! Při delší odpovědi budeš penalizován.
 
 ## INFORMACE O AKCI
 - Název: Tři roky s ChatGPT: Jak jsme se naučili nedělat si starosti (a milovat AI)
@@ -131,7 +134,15 @@ PAMATUJ: MAX 30 SLOV PER ODPOVĚĎ!
       }
     });
 
-    const text = response.text || "AI mlčí... asi přemýšlí o smyslu života.";
+    let text = response.text || "AI mlčí... asi přemýšlí o smyslu života.";
+
+    // Safety check: if response is too long, truncate to ~30 words
+    const words = text.split(/\s+/);
+    if (words.length > 30) {
+      text = words.slice(0, 30).join(' ') + '...';
+      console.warn(`Response truncated from ${words.length} to 30 words`);
+    }
+
     return res.status(200).json({ response: text });
 
   } catch (error) {
