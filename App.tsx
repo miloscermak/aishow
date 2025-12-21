@@ -141,7 +141,7 @@ const App: React.FC = () => {
                 />
                 <InfoCard
                   label="Kde"
-                  value="TBA"
+                  value="Impact Hub"
                   subValue="Brno"
                   icon={<MapPin size={28} />}
                   bgColor="bg-stone-100"
@@ -249,7 +249,7 @@ const App: React.FC = () => {
             <div className="bg-pop-yellow p-8 border-4 border-pop-black shadow-hard relative overflow-hidden group cursor-pointer hover:-translate-y-2 transition-transform">
               <div className="absolute top-0 right-0 bg-pop-red text-white text-xs font-bold px-2 py-1 border-l-2 border-b-2 border-pop-black">BRNO</div>
               <h3 className="font-comic text-3xl mb-2">29. LEDNA 2026</h3>
-              <p className="text-pop-black mb-2 font-medium">TBA | 18:00</p>
+              <p className="text-pop-black mb-2 font-medium">Impact Hub | 18:00</p>
               <p className="text-sm text-gray-700 mb-6">Středa</p>
               <a
                 href={ticketLinkBrno}
