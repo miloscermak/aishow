@@ -6,7 +6,7 @@ import { ChatWidget } from './components/ChatWidget';
 
 const App: React.FC = () => {
   const ticketLinkPraha = "https://goout.net/cs/listky/jak-jsme-se-naucili-nedelat-si-starosti-a-milovat-ai/pbfjb/";
-  const ticketLinkBrno = "https://goout.net/cs/listky/jak-jsme-se-naucili-nedelat-si-starosti-a-milovat-ai/pbfjb/";
+  const ticketLinkBrno = "https://goout.net/cs/tri-roky-s-chatgpt-jak-jsme-se-naucili-nedelat-si-starosti-a-milovat-ai/szewrdy/";
 
   return (
     <div className="min-h-screen bg-stone-100 overflow-x-hidden selection:bg-pop-yellow selection:text-pop-black">
