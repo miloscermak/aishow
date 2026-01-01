@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI KVÍZ 2025: INSIDER EDITION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366F1; /* Indigo */
+            --secondary: #10B981; /* Emerald */ 
+            --accent: #F59E0B; /* Amber */
+            --danger: #EF4444; /* Red */
+            --dark: #1F2937;
+            --light: #FFFFFF;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --border-width: 3px;
+            --shadow-offset: 4px;
+            --radius: 16px;
+        }
+
+        body {
+            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: var(--dark);
+            padding: 20px;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(245, 158, 11, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+      .container {
+            background: var(--light);
+            border: var(--border-width) solid var(--dark);
+            box-shadow: 
+                var(--shadow-offset) var(--shadow-offset) 0px var(--dark),
+                0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 650px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            transform: rotate(-1deg);
+            line-height: 1.1;
+        }
+
+      .category-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent) 100%);
+            border: 2px solid var(--dark);
+            border-radius: 999px;
+            padding: 8px 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transform: none;
+        }
+
+      .question-text {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: var(--dark);
+        }
+
+      .options-grid {
+            display: grid;
+            gap: 14px;
+            margin-bottom: 10px;
+        }
+
+      .btn {
+            background: var(--gray-50);
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 16px 20px;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            position: relative;
+            width: 100%;
+            color: var(--dark);
+        }
+
+      .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            background-color: var(--light);
+            border-color: var(--primary);
+        }
+
+      .btn:active:not(:disabled) {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 var(--dark);
+        }
+
+      .btn:disabled {
+            cursor: default;
+            opacity: 0.8;
+        }
+
+      .btn.correct {
+            background-color: #D1FAE5!important;
+            color: #065F46;
+            border-color: var(--secondary);
+            border-width: 2px;
+        }
+
+      .btn.wrong {
+            background-color: #FEE2E2!important;
+            color: #991B1B;
+            border-color: var(--danger);
+            border-width: 2px;
+        }
+
+      .controls {
+            margin-top: 25px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            min-height: 50px;
+        }
+
+      .next-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, #7C3AED 100%);
+            color: white;
+            font-family: 'Bangers', cursive;
+            font-size: 1.3rem;
+            padding: 12px 32px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 
+                0 4px 14px -2px rgba(99, 102, 241, 0.5),
+                inset 0 1px 2px rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            display: none;
+            transition: all 0.2s ease;
+        }
+
+      .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 6px 20px -2px rgba(99, 102, 241, 0.6),
+                inset 0 1px 2px rgba(255, 255, 255, 0.3);
+        }
+
+      .score-board {
+            font-family: 'Bangers', cursive;
+            font-size: 1.4rem;
+            background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-50) 100%);
+            padding: 8px 20px;
+            border: 2px solid var(--gray-200);
+            border-radius: 999px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+            margin-bottom: 20px;
+            display: inline-block;
+            color: var(--dark);
+        }
+
+      .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: var(--gray-200);
+            border: none;
+            margin-bottom: 25px;
+            border-radius: 999px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+      .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            width: 0%;
+            transition: width 0.5s ease-out;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sekce pro vysvětlení (Insight) */
+      .insight-box {
+            margin-top: 25px;
+            background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+            border: 2px solid #BFDBFE;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            display: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.4s ease-out;
+        }
+
+      .insight-title {
+            font-family: 'Bangers', cursive;
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            display: block;
+            letter-spacing: 0.5px;
+       }
+
+      .insight-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--gray-700);
+       }
+
+        /* Screens */
+        #start-screen, #result-screen {
+            display: block;
+        }
+        #quiz-screen {
+            display: none;
+        }
+
+      .feedback-header {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            font-family: 'Bangers', cursive;
+            letter-spacing: 0.5px;
+       }
+
+        /* Animations */
+        @keyframes pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+      .pop-in {
+            animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container pop-in">
+        <div id="start-screen">
+            <h1>AI KVÍZ 2025</h1>
+            <div class="category-badge">Insider Edition</div>
+            <p class="question-text">Přežil jsi rok 2025?<br>Ukaž, jak se orientuješ v éře agentů a deepfakes!</p>
+            <p>15 otázek a odpovědí.</p>
+            <br>
+            <button class="next-btn" style="display:inline-block;" onclick="startQuiz()">START HRY</button>
+        </div>
+
+        <div id="quiz-screen">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+            
+            <div class="score-board">Skóre: <span id="score">0</span></div>
+            <div class="category-badge" id="category">Kategorie</div>
+            
+            <div class="question-text" id="question">Načítání...</div>
+            
+            <div class="options-grid" id="options">
+                </div>
+
+            <div class="insight-box" id="insight-box">
+                <span class="feedback-header" id="feedback-header"></span>
+                <span class="insight-title">INSIDER INFO:</span>
+                <p class="insight-text" id="insight-text"></p>
+            </div>
+
+            <div class="controls">
+                <button class="next-btn" id="next-btn" onclick="nextQuestion()">DALŠÍ ></button>
+            </div>
+        </div>
+
+        <div id="result-screen" style="display:none;">
+            <h1>VÝSLEDEK</h1>
+            <p class="question-text" id="final-message"></p>
+            <div class="score-board" style="display:inline-block; font-size: 3rem; padding: 20px; background: var(--accent);">
+                <span id="final-score">0</span> / <span id="total-q-count">0</span>
+            </div>
+            <br><br>
+            <button class="next-btn" style="display:inline-block;" onclick="location.reload()">HRÁT ZNOVU</button>
+        </div>
+    </div>
+
+    <script>
+        // Databáze 17 otázek s vysvětlením
+        const database = [
+            {
+                q: "Který open-source model z Číny v lednu 2025 šokoval svět svými schopnostmi v logickém uvažování?", 
+                a: ["DeepSeek-R1", "QwenMax", "BaiduAI", "AlibabaLLM"], 
+                c: 0, 
+                cat: "Produkty",
+                expl: "Model DeepSeek R1 byl uveden v lednu 2025 a okamžitě zaujal odbornou veřejnost. Díky efektivní architektuře Mixture-of-Experts nabídl výkon srovnatelný s proprietárními modely za zlomek ceny. Jeho schopnost logického uvažování z něj udělala klíčového hráče open-source scény."
+            },
+            { 
+                q: "Kdy byl oficiálně vydán model GPT-5 od OpenAI?", 
+                a: ["V lednu 2025", "V květnu 2025", "7. srpna 2025", "1. listopadu 2025"], 
+                c: 2, 
+                cat: "Produkty",
+                expl: "OpenAI vydala model GPT-5 dne 7. srpna 2025 po sérii spekulací a odkladů. Model přinesl zásadní inovaci v podobě dynamického směrování, které automaticky přepíná mezi rychlým generováním a hlubokým uvažováním podle složitosti dotazu. Tím se podařilo sjednotit rychlost a intelekt do jednoho rozhraní."
+            },
+            { 
+                q: "Jak se jmenuje vývojářské prostředí od Google, které umožňuje \"vibe coding\" a v prosinci způsobilo vážný incident?", 
+                a: ["CodeStudio", "DevHub", "Antigravity", "CloudIDE"], 
+                c: 2, 
+                cat: "Produkty",
+                expl: "Vývojářské prostředí Google Antigravity, představené s funkcí 'vibe coding', způsobilo v prosinci 2025 vážný incident. AI agent v tzv. Turbo módu špatně interpretoval příkaz a smazal uživateli celý obsah disku D:. Incident vyvolal globální debatu o bezpečnosti autonomních agentů."
+            },
+            { 
+                q: "Která potravina byla školním bezpečnostním systémem v Marylandu chybně označena jako zbraň?", 
+                a: ["Banán", "Doritos chips", "Hot dog", "Pizza"], 
+                c: 1, 
+                cat: "Kauzy",
+                expl: "K incidentu došlo na střední škole v Marylandu, kde bezpečnostní AI systém identifikoval sáček chipsů Doritos jako zbraň. Student byl následně neoprávněně zadržen policií, což vedlo ke kritice spolehlivosti vizuálních detekčních systémů. Případ se stal symbolem kontextuální slepoty současné AI."
+            },
+            { 
+                q: "Co odhalila studie publikovaná v časopise Patterns o emisích AI v roce 2025?", 
+                a: ["Emise klesají", "AI emise = emise New Yorku", "Minimální dopad", "Data chybí"], 
+                c: 1, 
+                cat: "Kauzy",
+                expl: "Studie v časopise Patterns poprvé izolovala ekologickou stopu výhradně AI operací a přinesla alarmující čísla. Ukázalo se, že emise spojené s tréninkem a provozem modelů v roce 2025 vyrovnaly roční uhlíkovou stopu celého New Yorku. Zároveň upozornila na extrémní spotřebu vody potřebnou pro chlazení datacenter."
+            },
+            { 
+                q: "Jaký byl hlavní důvod kritiky a výsměchu nositelného zařízení \"Friend\"?", 
+                a: ["Příliš drahé", "Nefunkční", "Nahrává vše a je creepy", "Špatný design"], 
+                c: 2, 
+                cat: "Kauzy",
+                expl: "Nositelné zařízení 'Friend' mělo sloužit jako neustále naslouchající společník, ale narazilo na tvrdou kritiku. Marketingová kampaň i samotný produkt byly označeny za 'creepy' a sociálně neobratné. Většina recenzentů i veřejnosti odmítla myšlenku zařízení, které parazituje na reálných konverzacích."
+            },
+            { 
+                q: "Kdo se stal Osobností roku 2025 podle časopisu TIME?", 
+                a: ["Elon Musk", "Sam Altman", "Jensen Huang", "Tim Cook"], 
+                c: 2, 
+                cat: "Osobnosti",
+                expl: "Časopis TIME jmenoval Jensena Huanga, CEO společnosti Nvidia, Osobností roku 2025 (spolu s 'Architekty AI'). Ocenění reflektuje absolutní dominanci Nvidie jako dodavatele hardwarové infrastruktury pro celosvětový boom umělé inteligence. Huangova vize 'Suverénní AI' navíc ovlivnila strategie mnoha světových vlád."
+            },
+            { 
+                q: "Jakou společnost vede Jensen Huang, která v roce 2025 překonala hodnotu 5 bilionů dolarů?", 
+                a: ["AMD", "Intel", "NVIDIA", "Qualcomm"], 
+                c: 2, 
+                cat: "Osobnosti",
+                expl: "Společnost Nvidia v roce 2025 potvrdila svou pozici nejhodnotnější firmy světa a překonala tržní kapitalizaci 5 bilionů dolarů. Její čipy jsou nezbytnou infrastrukturou pro trénink i provoz prakticky všech pokročilých AI modelů. Úspěch firmy je přímo spojen s masivními investicemi států a korporací do AI."
+            },
+            { 
+                q: "Kdo je Liang Wenfeng?", 
+                a: ["CEO Alibaba", "Zakladatel DeepSeek", "Ministr AI Číny", "Hacker"], 
+                c: 1, 
+                cat: "Osobnosti",
+                expl: "Liang Wenfeng je zakladatelem čínské laboratoře DeepSeek, která stojí za revolučním modelem R1. Jeho strategie zaměřená na efektivitu a open-source přístup umožnila Číně držet krok v AI navzdory americkým sankcím na čipy. V roce 2025 byl zařazen mezi nejvlivnější postavy v oboru."
+            },
+            { 
+                q: "Která firma specializovaná na AI cloud (GPU infrastructure) vstoupila v roce 2025 na burzu (IPO) s velkým úspěchem?", 
+                a: ["CoreWeave", "Lambda Labs", "Paperspace", "RunPod"], 
+                c: 0, 
+                cat: "Byznys",
+                expl: "Společnost CoreWeave, původně těžař kryptoměn transformovaný na poskytovatele GPU cloudu, zažila v roce 2025 mimořádně úspěšný vstup na burzu. Její akcie po IPO vzrostly o desítky procent, což potvrdilo důvěru investorů v infrastrukturní vrstvu AI. Firma se stala klíčovým partnerem pro vývojáře, kteří nemají vlastní hardware."
+            },
+            { 
+                q: "Kdy začala v EU platit pravidla AI Act pro \"General Purpose AI\" (GPAI) modely?", 
+                a: ["1. ledna 2025", "2. srpna 2025", "1. října 2025", "31. prosince 2025"], 
+                c: 1, 
+                cat: "Byznys",
+                expl: "Evropská unie začala v srpnu 2025 plně vymáhat pravidla AI Act specificky pro modely pro obecné účely (GPAI). Regulace vyžaduje od firem transparentnost ohledně tréninkových dat a hodnocení systémových rizik. Tím se Evropa stala prvním regionem s komplexním právním rámcem pro pokročilou AI."
+            },
+            { 
+                q: "Jakou investici získal francouzský startup Mistral AI v roce 2025?", 
+                a: ["100 milionů eur", "500 milionů eur", "1,7 miliardy eur", "10 miliard eur"], 
+                c: 2, 
+                cat: "Byznys",
+                expl: "Francouzský startup Mistral AI získal v roce 2025 investici ve výši 1,7 miliardy eur. Tato masivní kapitálová injekce potvrdila jeho roli evropského lídra v oblasti generativní umělé inteligence. Firma se zaměřuje na efektivní modely a suverenitu dat, což rezonuje s evropskými regulacemi."
+            },
+            { 
+                q: "Jaký termín se používá pro nekvalitní, masově generovaný AI obsah zaplavující internet?", 
+                a: ["AI Trash", "AI Slop", "Junk Content", "Spam AI"], 
+                c: 1, 
+                cat: "Kuriozity",
+                expl: "Termín 'AI Slop' se v roce 2025 vžil pro označení nekvalitního, masově generovaného obsahu, který zaplavil internet. Jde o texty, obrázky a weby vytvářené pouze za účelem zisku z reklamy nebo manipulace vyhledávačů. Tento digitální odpad výrazně zhoršil uživatelskou zkušenost na sociálních sítích i ve vyhledávání."
+            },
+            { 
+                q: "Co je \"Vibe Coding\"?", 
+                a: ["Programování s hudbou", "Psaní kódu přirozeným jazykem", "Kód na základě nálady", "AI debugging"], 
+                c: 1, 
+                cat: "Kuriozity",
+                expl: "Koncept 'Vibe Coding' představuje posun od psaní přesné syntaxe k popisování funkčnosti přirozeným jazykem. Vývojář se soustředí na logiku a 'náladu' aplikace, zatímco AI agenti (např. v nástroji Antigravity) generují a opravují kód. Tento přístup demokratizuje vývoj softwaru, ale nese s sebou nová rizika."
+            },
+            { 
+                q: "Který bizarní \"deepfake\" incident zahrnoval papeže a Donalda Trumpa v květnu 2025?", 
+                a: ["Trump jako Buddha", "Trump oblečený jako papež", "Trump s papežem Františkem", "Trump v mešitě"], 
+                c: 1, 
+                cat: "Kuriozity",
+                expl: "V květnu 2025 obletěly svět hyperrealistické deepfake snímky Donalda Trumpa oblečeného jako papež, účastnícího se konkláve. Obrázky byly tak přesvědčivé, že je sdílely i některé náboženské organizace, než byly odhaleny jako podvrh. Incident znovu rozvířil debatu o nutnosti označování generovaného obsahu."
+            }
+        ];
+
+        let quizQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        const totalQuestions = database.length;
+
+        // Shuffle function
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startQuiz() {
+            // Použijeme všechny otázky z databáze, ale zamícháme je
+            quizQuestions = shuffleArray([...database]);
+            
+            currentQuestionIndex = 0;
+            score = 0;
+            
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('quiz-screen').style.display = 'block';
+            document.getElementById('result-screen').style.display = 'none';
+            
+            updateScore();
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const data = quizQuestions[currentQuestionIndex];
+            
+            // UI Updates
+            document.getElementById('category').textContent = data.cat;
+            document.getElementById('category').style.background = getCategoryColor(data.cat);
+            document.getElementById('question').textContent = data.q;
+            
+            // Hide Insight Box
+            const insightBox = document.getElementById('insight-box');
+            insightBox.style.display = 'none';
+            
+            // Progress Bar
+            const progressPct = (currentQuestionIndex / totalQuestions) * 100;
+            document.getElementById('progress').style.width = progressPct + '%';
+
+            // Reset Controls
+            document.getElementById('next-btn').style.display = 'none';
+
+            // Generate Options
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            
+            data.a.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn';
+                btn.textContent = opt;
+                btn.onclick = () => checkAnswer(index, btn);
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        function getCategoryColor(cat) {
+            switch(cat) {
+                case 'Produkty': return 'var(--primary)';
+                case 'Kauzy': return 'var(--danger)';
+                case 'Osobnosti': return 'var(--secondary)';
+                case 'Byznys': return 'var(--accent)';
+                case 'Kuriozity': return '#8B5CF6'; // Purple
+                default: return 'var(--primary)';
+            }
+        }
+
+        function checkAnswer(selectedIndex, btnElement) {
+            const data = quizQuestions[currentQuestionIndex];
+            const buttons = document.querySelectorAll('.options-grid .btn');
+            
+            // Disable buttons
+            buttons.forEach(b => b.disabled = true);
+
+            const feedbackHeader = document.getElementById('feedback-header');
+            const insightBox = document.getElementById('insight-box');
+            const insightText = document.getElementById('insight-text');
+
+            if (selectedIndex === data.c) {
+                // Correct
+                btnElement.classList.add('correct');
+                score++;
+                updateScore();
+                feedbackHeader.textContent = "BOOM! Správně! 🎉";
+                feedbackHeader.style.color = "var(--secondary)";
+            } else {
+                // Wrong
+                btnElement.classList.add('wrong');
+                // Highlight correct one
+                buttons[data.c].classList.add('correct');
+                feedbackHeader.textContent = "VEDLE! 💥 Správná odpověď byla:";
+                feedbackHeader.style.color = "var(--danger)";
+            }
+
+            // Show explanation
+            insightText.textContent = data.expl;
+            insightBox.style.display = 'block';
+
+            document.getElementById('next-btn').style.display = 'inline-block';
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < totalQuestions) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+
+        function showResults() {
+            document.getElementById('quiz-screen').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+            
+            document.getElementById('total-q-count').textContent = totalQuestions;
+            const finalScoreElem = document.getElementById('final-score');
+            finalScoreElem.textContent = score;
+            
+            const msgElem = document.getElementById('final-message');
+            let msg = "";
+            
+            const ratio = score / totalQuestions;
+
+            if (ratio === 1) msg = "AI GENIUS! 🧠 Jsi připraven vládnout světu!";
+            else if (ratio >= 0.75) msg = "Skvělá práce! 🚀 Vyznáš se v chaosu roku 2025.";
+            else if (ratio >= 0.5) msg = "Slušný průměr. 🤖 AI tě zatím nenahradí, ale měl bys přidat.";
+            else msg = "Au! 💥 Podle AI halucinuješ. Zkus to znovu!";
+            
+            msgElem.textContent = msg;
+        }
+
+    </script>
+</body>
+</html>

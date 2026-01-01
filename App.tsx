@@ -3,6 +3,7 @@ import { Calendar, MapPin, Ticket, Clock, Star, Brain, Zap, Heart, Bot } from 'l
 import { SectionTitle } from './components/SectionTitle';
 import { InfoCard } from './components/InfoCard';
 import { ChatWidget } from './components/ChatWidget';
+import { QuizPromo } from './components/QuizPromo';
 
 const App: React.FC = () => {
   const ticketLinkPraha = "https://goout.net/cs/listky/jak-jsme-se-naucili-nedelat-si-starosti-a-milovat-ai/pbfjb/";
@@ -269,6 +270,9 @@ const App: React.FC = () => {
           <p className="font-comic tracking-wider opacity-80">© 2025 AI Show Senta & Miloš. Design inspirován pop-artem.</p>
         </div>
       </footer>
+
+      {/* Temporary Quiz Promo - expires 2026-01-11 */}
+      <QuizPromo />
     </div>
   );
 };
