@@ -12,7 +12,22 @@ export const QuizPromo: React.FC = () => {
     // Check if promotion has expired
     if (new Date() > EXPIRY_DATE) {
       setIsExpired(true);
+      return;
     }
+
+    // Check if URL contains #kviz - auto-open quiz
+    if (window.location.hash === '#kviz') {
+      setIsOpen(true);
+    }
+
+    // Listen for hash changes
+    const handleHashChange = () => {
+      if (window.location.hash === '#kviz') {
+        setIsOpen(true);
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
   // Don't render anything if expired
@@ -50,7 +65,13 @@ export const QuizPromo: React.FC = () => {
       {isOpen && (
         <div
           className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
-          onClick={() => setIsOpen(false)}
+          onClick={() => {
+            setIsOpen(false);
+            // Clear hash from URL
+            if (window.location.hash === '#kviz') {
+              history.replaceState(null, '', window.location.pathname);
+            }
+          }}
         >
           {/* Modal Content */}
           <div
@@ -59,7 +80,12 @@ export const QuizPromo: React.FC = () => {
           >
             {/* Close Button */}
             <button
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                setIsOpen(false);
+                if (window.location.hash === '#kviz') {
+                  history.replaceState(null, '', window.location.pathname);
+                }
+              }}
               className="absolute -top-4 -right-4 z-10 bg-pop-red text-white p-2 border-4 border-pop-black shadow-hard-sm hover:scale-110 hover:rotate-12 transition-transform"
             >
               <X className="w-6 h-6" />
